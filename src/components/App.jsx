@@ -22,11 +22,12 @@ function App() {
 		}
 	});
 
+	// Використання функції оновлення (prevReviews) гарантує, що дані, які ми оновлюємо, є актуальними (об'єкт reviews). У конспекті про це не згадується.
 	const updateFeedback = (feedbackType) => {
-		setReviews({
-			...reviews,
-			[feedbackType]: reviews[feedbackType] + 1
-		})
+		setReviews((prevReviews) => ({
+			...prevReviews,
+			[feedbackType]: prevReviews[feedbackType] + 1
+		}));
 	}
 
 	const resetFeedback = () => {
@@ -38,7 +39,7 @@ function App() {
 	};
 
 	const totalFeedback = reviews.good + reviews.neutral + reviews.bad;
-	const positiveFeedback = Math.round((reviews.good / totalFeedback) * 100);
+	const positiveFeedback = totalFeedback > 0 ? Math.round((reviews.good / totalFeedback) * 100) : 0;
 
 	useEffect(() => {
 		localStorage.setItem("saved-reviews", JSON.stringify(reviews));
@@ -49,15 +50,21 @@ function App() {
 
 			<Description />
 
-			<Options updateFeedback={updateFeedback} resetFeedback={resetFeedback} />
+			<Options
+				updateFeedback={updateFeedback}
+				resetFeedback={resetFeedback}
+				totalFeedback={totalFeedback}
+			/>
 
-			{!totalFeedback ?
-				<Notification /> :
+			{totalFeedback > 0 ?
 				<Feedback
 					reviews={reviews}
 					totalFeedback={totalFeedback}
 					positiveFeedback={positiveFeedback}
-				/>}
+				/>
+				:
+				<Notification />}
+
 
 		</>
 	)
