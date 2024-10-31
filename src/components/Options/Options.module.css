@@ -1,0 +1,18 @@
+.wrap {
+	display: flex;
+	gap: 10px;
+}
+
+.button {
+	background-color: #EFEFEF;
+	padding: 5px 10px;
+	border: 1px solid #9A9A9A;
+	border-radius: 3px;
+	transition: background-color 0.3s ease 0s;
+	outline: none;
+
+	&:hover,
+	&:focus {
+		background-color: #AFAFAF;
+	}
+}
